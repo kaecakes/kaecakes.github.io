@@ -6,11 +6,12 @@ import userScene from '../assets/3d/stickman.glb';
 import { RotationDirection } from '../routes/Home';
 
 interface UserProps {
+  hoveringObject: string;
   isRotating: boolean;
   rotationDirection: RotationDirection
 }
 
-const User = ({ isRotating, rotationDirection }: UserProps) => {
+const User = ({ hoveringObject, isRotating, rotationDirection }: UserProps) => {
   const userRef = useRef<THREE.Mesh>(null!);
   const { scene, animations }= useGLTF(userScene);
   const { actions } = useAnimations(animations, userRef);
@@ -31,13 +32,14 @@ const User = ({ isRotating, rotationDirection }: UserProps) => {
   const [scale, position, rotation] = adjustForScreenSize();
 
   useEffect(() => {
-    actions[isRotating ? 'Idle' : 'Run']?.stop();
-    actions[isRotating ? 'Run' : 'Idle']?.play();
-  }, [actions, isRotating]);
+    actions[isRotating && !hoveringObject ? 'Idle' : 'Run']?.stop();
+    actions[isRotating && !hoveringObject ? 'Run' : 'Idle']?.play();
+  }, [actions, hoveringObject, isRotating]);
 
   useEffect(() => {
-    userRef.current.rotateY(rotationDirection === 'left' ? 0 : Math.PI);
-  }, [rotation, rotationDirection]);
+    if (hoveringObject) userRef.current.rotateY(Math.PI / 2);
+    else userRef.current.rotateY(rotationDirection === 'left' ? 0 : Math.PI);
+  }, [hoveringObject, rotation, rotationDirection]);
 
   return (
     <mesh

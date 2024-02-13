@@ -111,19 +111,22 @@ const Space = ({ isRotating, setCurrentStage, setHoveringObject, setIsRotating, 
       lastX.current = clientX;
       rotationSpeed.current = delta * 0.01 * Math.PI;
       if (delta != 0) setRotationDirection(delta < 0 ? 'left' : 'right');
+      setHoveringObject('');
     }
     
     // detect planet hover
-    const mouse = new THREE.Vector2();
-    const raycaster = new THREE.Raycaster();
-    mouse.x = (clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(clientY / window.innerHeight) * 2 + 1;
-    raycaster.setFromCamera(mouse, camera);
-    if (raycaster.intersectObjects(planetOneRef.current.children, true).length > 0) setHoveringObject('planetOne');
-    else if (raycaster.intersectObjects(planetTwoRef.current.children, true).length > 0) setHoveringObject('planetTwo');
-    else if (raycaster.intersectObjects(planetThreeRef.current.children, true).length > 0) setHoveringObject('planetThree');
-    else if (raycaster.intersectObjects(planetFourRef.current.children, true).length > 0) setHoveringObject('planetFour');
-    else setHoveringObject('');
+    else {
+      const mouse = new THREE.Vector2();
+      const raycaster = new THREE.Raycaster();
+      mouse.x = (clientX / window.innerWidth) * 2 - 1;
+      mouse.y = -(clientY / window.innerHeight) * 2 + 1;
+      raycaster.setFromCamera(mouse, camera);
+      if (raycaster.intersectObjects(planetOneRef.current.children, true).length > 0) setHoveringObject('planetOne');
+      else if (raycaster.intersectObjects(planetTwoRef.current.children, true).length > 0) setHoveringObject('planetTwo');
+      else if (raycaster.intersectObjects(planetThreeRef.current.children, true).length > 0) setHoveringObject('planetThree');
+      else if (raycaster.intersectObjects(planetFourRef.current.children, true).length > 0) setHoveringObject('planetFour');
+      else setHoveringObject('');
+    }
   }, [camera, isRotating, viewport.width, setHoveringObject, setRotationDirection]);
 
   const handleKeyDown = useCallback((e: KeyboardEvent) => {

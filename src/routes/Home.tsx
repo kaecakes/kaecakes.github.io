@@ -38,9 +38,9 @@ const Home = () => {
             setHoveringObject={setHoveringObject}
             setIsRotating={setIsRotating}
             setRotationDirection={setRotationDirection}
-          />''
+          />
           {hoveringObject && <Portal />}
-          <User isRotating={isRotating} rotationDirection={rotationDirection} />
+          <User hoveringObject={hoveringObject} isRotating={isRotating} rotationDirection={rotationDirection} />
         </Suspense>
       </Canvas>
     </section>
