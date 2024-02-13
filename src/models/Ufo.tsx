@@ -3,7 +3,7 @@ import { useFrame } from '@react-three/fiber';
 import { useRef, useEffect } from 'react';
 import * as THREE from 'three';
 
-import ufoScene from '../assets/3d/ufo.glb';
+import ufoScene from '../assets/3d/ufo2.glb';
 
 const Ufo = () => {
     const ufoRef = useRef<THREE.Mesh>(null!);
@@ -11,14 +11,14 @@ const Ufo = () => {
     const { actions } = useAnimations(animations, ufoRef);
 
     useEffect(() => {
-        actions['CINEMA_4D_Main']?.play();
+        actions['Floating in Space']?.play();
     }, [actions]);
 
     useFrame(({ clock, camera }) => {
       ufoRef.current.position.y = Math.sin(clock.elapsedTime) * 0.2 + 2;
-        if (ufoRef.current.position.x > camera.position.x + 10) {
-          ufoRef.current.rotation.y = Math.PI;
-        } else if (ufoRef.current.position.x < camera.position.x - 10) {
+        if (ufoRef.current.position.x > camera.position.x + 15) {
+          ufoRef.current.rotation.y = Math.PI
+        } else if (ufoRef.current.position.x < camera.position.x - 15) {
           ufoRef.current.rotation.y = 0;
         }
         if (ufoRef.current.rotation.y === 0) {
@@ -32,11 +32,10 @@ const Ufo = () => {
 
     return (
         <mesh
-            ref={ufoRef}
-            position={[-6, 4, 0]}
-            scale={new THREE.Vector3(0.005, 0.005, 0.005)}
+          ref={ufoRef}
+          position={[-20, 24, -5]}
         >
-            <primitive object={scene} />
+          <primitive object={scene} />
         </mesh>
     );
 };

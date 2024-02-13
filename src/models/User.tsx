@@ -3,12 +3,14 @@ import { useEffect, useRef } from 'react';
 import { Euler, Vector3 } from 'three';
 
 import userScene from '../assets/3d/stickman.glb';
+import { RotationDirection } from '../routes/Home';
 
 interface UserProps {
   isRotating: boolean;
+  rotationDirection: RotationDirection
 }
 
-const User = ({ isRotating }: UserProps) => {
+const User = ({ isRotating, rotationDirection }: UserProps) => {
   const userRef = useRef<THREE.Mesh>(null!);
   const { scene, animations }= useGLTF(userScene);
   const { actions } = useAnimations(animations, userRef);
@@ -32,6 +34,10 @@ const User = ({ isRotating }: UserProps) => {
     actions[isRotating ? 'Idle' : 'Run']?.stop();
     actions[isRotating ? 'Run' : 'Idle']?.play();
   }, [actions, isRotating]);
+
+  useEffect(() => {
+    userRef.current.rotateY(rotationDirection === 'left' ? 0 : Math.PI);
+  }, [rotation, rotationDirection]);
 
   return (
     <mesh

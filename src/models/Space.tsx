@@ -14,11 +14,14 @@ import { GLTF } from 'three-stdlib';
 import { a } from '@react-spring/three';
 
 import spaceScene from '../assets/3d/space.glb';
+import { RotationDirection } from '../routes/Home';
 
 interface SpaceProps {
   isRotating: boolean;
+  rotationDirection: RotationDirection
   setCurrentStage: React.Dispatch<React.SetStateAction<number>>;
   setIsRotating: React.Dispatch<React.SetStateAction<boolean>>;
+  setRotationDirection: React.Dispatch<React.SetStateAction<RotationDirection>>;
 }
 
 type GLTFResult = GLTF & {
@@ -51,7 +54,7 @@ type GLTFResult = GLTF & {
   };
 };
 
-const Space = ({ isRotating, setCurrentStage, setIsRotating }: SpaceProps ) => {
+const Space = ({ isRotating, setCurrentStage, setIsRotating, setRotationDirection }: SpaceProps ) => {
   const spaceRef = useRef<THREE.Group>(null!);
 
   const { gl, viewport } = useThree();
@@ -98,8 +101,9 @@ const Space = ({ isRotating, setCurrentStage, setIsRotating }: SpaceProps ) => {
       spaceRef.current.rotation.y += delta * 0.01 * Math.PI;
       lastX.current = clientX;
       rotationSpeed.current = delta * 0.01 * Math.PI;
+      if (delta != 0) setRotationDirection(delta < 0 ? 'left' : 'right');
     }
-  }, [isRotating, viewport.width]);
+  }, [isRotating, viewport.width, setRotationDirection]);
 
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if (e.key === 'ArrowLeft') {
