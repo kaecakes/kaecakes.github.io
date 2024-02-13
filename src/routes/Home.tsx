@@ -2,11 +2,11 @@ import { Canvas } from '@react-three/fiber';
 import { Suspense, useState } from 'react';
 import * as THREE from 'three';
 
-import Ufo from '../models/Ufo';
 import Loader from '../components/Loader';
-import User from '../models/User';
+import Portal from '../models/Portal';
 import Sky from '../models/Sky';
 import Space from '../models/Space';
+import User from '../models/User';
 
 {/* <div className="absolute top-28 left-0 right-0 z-10 flex items-center justify-center">
   POPUP
@@ -15,8 +15,9 @@ import Space from '../models/Space';
 export type RotationDirection = 'right' | 'left'
 
 const Home = () => {
-  const [rotationDirection, setRotationDirection] = useState<RotationDirection>('right');
+  const [hoveringObject, setHoveringObject] = useState<string>('');
   const [isRotating, setIsRotating] = useState<boolean>(false);
+  const [rotationDirection, setRotationDirection] = useState<RotationDirection>('right');
   const [, setCurrentStage] = useState<number>(1);
 
   return (
@@ -29,15 +30,16 @@ const Home = () => {
           <hemisphereLight color={new THREE.Color(0xFFFFFF)} groundColor={new THREE.Color(0xFFFFFF)} intensity={1} />
           
           {/* 3D Objects */}
-          <Ufo />
           <Sky isRotating={isRotating} />
           <Space
             isRotating={isRotating}
             rotationDirection={rotationDirection}
             setCurrentStage={setCurrentStage}
+            setHoveringObject={setHoveringObject}
             setIsRotating={setIsRotating}
             setRotationDirection={setRotationDirection}
-          />
+          />''
+          {hoveringObject && <Portal />}
           <User isRotating={isRotating} rotationDirection={rotationDirection} />
         </Suspense>
       </Canvas>

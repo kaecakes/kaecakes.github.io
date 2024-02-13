@@ -20,6 +20,7 @@ interface SpaceProps {
   isRotating: boolean;
   rotationDirection: RotationDirection
   setCurrentStage: React.Dispatch<React.SetStateAction<number>>;
+  setHoveringObject: React.Dispatch<React.SetStateAction<string>>;
   setIsRotating: React.Dispatch<React.SetStateAction<boolean>>;
   setRotationDirection: React.Dispatch<React.SetStateAction<RotationDirection>>;
 }
@@ -54,8 +55,13 @@ type GLTFResult = GLTF & {
   };
 };
 
-const Space = ({ isRotating, setCurrentStage, setIsRotating, setRotationDirection }: SpaceProps ) => {
+const Space = ({ isRotating, setCurrentStage, setHoveringObject, setIsRotating, setRotationDirection }: SpaceProps ) => {
+  const planetOneRef = useRef<THREE.Group>(null!);
+  const planetTwoRef = useRef<THREE.Group>(null!);
+  const planetThreeRef = useRef<THREE.Group>(null!);
+  const planetFourRef = useRef<THREE.Group>(null!);
   const spaceRef = useRef<THREE.Group>(null!);
+  const { camera } = useThree();
 
   const { gl, viewport } = useThree();
   const { nodes, materials } = useGLTF(spaceScene) as GLTFResult;
@@ -95,15 +101,30 @@ const Space = ({ isRotating, setCurrentStage, setIsRotating, setRotationDirectio
   const handlePointerMove = useCallback((e: PointerEvent | TouchEvent) => {
     e.stopPropagation();
     e.preventDefault();
+    const clientX = (e as TouchEvent).touches ? (e as TouchEvent).touches[0].clientX : (e as PointerEvent).clientX;
+    const clientY = (e as TouchEvent).touches ? (e as TouchEvent).touches[0].clientY : (e as PointerEvent).clientY;
+
+    // animate running
     if (isRotating) {
-      const clientX = (e as TouchEvent).touches ? (e as TouchEvent).touches[0].clientX : (e as PointerEvent).clientX;
       const delta = (clientX - lastX.current) / viewport.width;
       spaceRef.current.rotation.y += delta * 0.01 * Math.PI;
       lastX.current = clientX;
       rotationSpeed.current = delta * 0.01 * Math.PI;
       if (delta != 0) setRotationDirection(delta < 0 ? 'left' : 'right');
     }
-  }, [isRotating, viewport.width, setRotationDirection]);
+    
+    // detect planet hover
+    const mouse = new THREE.Vector2();
+    const raycaster = new THREE.Raycaster();
+    mouse.x = (clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(clientY / window.innerHeight) * 2 + 1;
+    raycaster.setFromCamera(mouse, camera);
+    if (raycaster.intersectObjects(planetOneRef.current.children, true).length > 0) setHoveringObject('planetOne');
+    else if (raycaster.intersectObjects(planetTwoRef.current.children, true).length > 0) setHoveringObject('planetTwo');
+    else if (raycaster.intersectObjects(planetThreeRef.current.children, true).length > 0) setHoveringObject('planetThree');
+    else if (raycaster.intersectObjects(planetFourRef.current.children, true).length > 0) setHoveringObject('planetFour');
+    else setHoveringObject('');
+  }, [camera, isRotating, viewport.width, setHoveringObject, setRotationDirection]);
 
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if (e.key === 'ArrowLeft') {
@@ -173,6 +194,7 @@ const Space = ({ isRotating, setCurrentStage, setIsRotating, setRotationDirectio
       scale={new THREE.Vector3(...scale)}
     >
       <group scale={0.05}>
+        {/* SPACE MAN */}
         <group rotation={[-Math.PI / 2, 0, 0]} scale={100}>
           <mesh
             geometry={nodes.body_Material001_0.geometry}
@@ -183,7 +205,9 @@ const Space = ({ isRotating, setCurrentStage, setIsRotating, setRotationDirectio
             material={materials["Material.002"]}
           />
         </group>
+        {/* SMALL BLACK PLANET - 1 */}
         <group
+          ref={planetOneRef}
           position={[-357.404, 392.646, 0]}
           rotation={[-Math.PI / 2, 0, 0]}
           scale={39.706}
@@ -197,7 +221,9 @@ const Space = ({ isRotating, setCurrentStage, setIsRotating, setRotationDirectio
             material={materials["Material.002"]}
           />
         </group>
+        {/* SMALL BLACK PLANET - 2 */}
         <group
+          ref={planetTwoRef}
           position={[199.634, 566.883, -221.001]}
           rotation={[-Math.PI / 2, 0, 0]}
           scale={39.706}
@@ -211,101 +237,94 @@ const Space = ({ isRotating, setCurrentStage, setIsRotating, setRotationDirectio
             material={materials["Material.002"]}
           />
         </group>
+        {/* LARGE WHITE PLANET - 1 */}
+        <group ref={planetThreeRef}>
+          <mesh
+            geometry={nodes.Sphere_Material001_0.geometry}
+            material={materials["Material.001"]}
+            position={[375.469, 427.948, 0]}
+            rotation={[-Math.PI / 2, 0, 0]}
+            scale={62.402}
+          />
+          <mesh
+            geometry={nodes.Sphere001_Material002_0.geometry}
+            material={materials["Material.002"]}
+            position={[375.469, 427.948, 0]}
+            rotation={[-Math.PI / 2, 0, 0]}
+            scale={60.324}
+          />
+          <mesh
+            geometry={nodes.Sphere004_Material002_0.geometry}
+            material={materials["Material.002"]}
+            position={[375.469, 427.948, 0]}
+            rotation={[-0.688, 0, 0]}
+            scale={[104.129, 81.609, 0]}
+          />
+        </group>
+        {/* LARGE WHITE PLANET - 2 */}
+        <group ref={planetFourRef}>
+          <mesh
+            geometry={nodes.Sphere006_Material002_0.geometry}
+            material={materials["Material.002"]}
+            position={[-341.988, 460.196, -117.028]}
+            rotation={[-Math.PI / 2, 0, 0]}
+            scale={60.324}
+          />
+          <mesh
+            geometry={nodes.Sphere005_Material001_0.geometry}
+            material={materials["Material.001"]}
+            position={[-341.988, 460.196, -117.028]}
+            rotation={[-Math.PI / 2, 0, 0]}
+            scale={62.402}
+          />
+        </group>
+        {/* SMALL PLANETS */}
+        <group>
+          <mesh
+            geometry={nodes.Sphere011_Material002_0.geometry}
+            material={materials["Material.002"]}
+            position={[-553.462, 331.074, -379.067]}
+            rotation={[-Math.PI / 2, 0, 0]}
+            scale={11.437}
+          />
+          <mesh
+            geometry={nodes.Sphere010_Material002_0.geometry}
+            material={materials["Material.002"]}
+            position={[-287.442, 585.792, -311.857]}
+            rotation={[-Math.PI / 2, 0, 0]}
+            scale={16.881}
+          />
+          <mesh
+            geometry={nodes.Sphere009_Material002_0.geometry}
+            material={materials["Material.002"]}
+            position={[507.522, 667.594, -214.475]}
+            rotation={[-Math.PI / 2, 0, 0]}
+            scale={16.881}
+          />
+        </group>
+        {/* SKY */}
+        <group>
+          <mesh
+            geometry={nodes.particles_Material002_0.geometry}
+            material={materials["Material.002"]}
+            position={[489.69, 793.811, 355.293]}
+            rotation={[-Math.PI / 2, 0, -Math.PI / 2]}
+            scale={20.408}
+          />
+          <mesh
+            geometry={nodes.Cube_Material001_0.geometry}
+            material={materials["Material.001"]}
+            position={[0, -101.673, 0]}
+            rotation={[-Math.PI / 2, 0, 0]}
+            scale={[1120.013, 1120.013, 1120.013]}
+          />
+        </group>
+        {/* FLOOR */}
         <mesh
           geometry={nodes.waves_Material002_0.geometry}
           material={materials["Material.002"]}
           rotation={[-Math.PI / 2, 0, 0]}
           scale={[100, 100, 1.891]}
-        />
-        <mesh
-          geometry={nodes.waves1_Material002_0.geometry}
-          material={materials["Material.002"]}
-          rotation={[-Math.PI / 2, 0, 0]}
-          scale={[100, 100, 1.891]}
-        />
-        <mesh
-          geometry={nodes.waves2_Material002_0.geometry}
-          material={materials["Material.002"]}
-          position={[92.464, 15.529, 2.112]}
-          rotation={[-Math.PI / 2, 0, 0]}
-          scale={[100, 100, 1.891]}
-        />
-        <mesh
-          geometry={nodes.particles_Material002_0.geometry}
-          material={materials["Material.002"]}
-          position={[489.69, 793.811, 355.293]}
-          rotation={[-Math.PI / 2, 0, -Math.PI / 2]}
-          scale={20.408}
-        />
-        <mesh
-          geometry={nodes.Sphere_Material001_0.geometry}
-          material={materials["Material.001"]}
-          position={[375.469, 427.948, 0]}
-          rotation={[-Math.PI / 2, 0, 0]}
-          scale={62.402}
-        />
-        <mesh
-          geometry={nodes.Sphere001_Material002_0.geometry}
-          material={materials["Material.002"]}
-          position={[375.469, 427.948, 0]}
-          rotation={[-Math.PI / 2, 0, 0]}
-          scale={60.324}
-        />
-        <mesh
-          geometry={nodes.Sphere004_Material002_0.geometry}
-          material={materials["Material.002"]}
-          position={[375.469, 427.948, 0]}
-          rotation={[-0.688, 0, 0]}
-          scale={[104.129, 81.609, 0]}
-        />
-        <mesh
-          geometry={nodes.Sphere005_Material001_0.geometry}
-          material={materials["Material.001"]}
-          position={[-341.988, 460.196, -117.028]}
-          rotation={[-Math.PI / 2, 0, 0]}
-          scale={62.402}
-        />
-        <mesh
-          geometry={nodes.Sphere006_Material002_0.geometry}
-          material={materials["Material.002"]}
-          position={[-341.988, 460.196, -117.028]}
-          rotation={[-Math.PI / 2, 0, 0]}
-          scale={60.324}
-        />
-        <mesh
-          geometry={nodes.Sphere009_Material002_0.geometry}
-          material={materials["Material.002"]}
-          position={[507.522, 667.594, -214.475]}
-          rotation={[-Math.PI / 2, 0, 0]}
-          scale={16.881}
-        />
-        <mesh
-          geometry={nodes.Sphere010_Material002_0.geometry}
-          material={materials["Material.002"]}
-          position={[-287.442, 585.792, -311.857]}
-          rotation={[-Math.PI / 2, 0, 0]}
-          scale={16.881}
-        />
-        <mesh
-          geometry={nodes.Sphere011_Material002_0.geometry}
-          material={materials["Material.002"]}
-          position={[-553.462, 331.074, -379.067]}
-          rotation={[-Math.PI / 2, 0, 0]}
-          scale={11.437}
-        />
-        <mesh
-          geometry={nodes.Cube_Material001_0.geometry}
-          material={materials["Material.001"]}
-          position={[0, -101.673, 0]}
-          rotation={[-Math.PI / 2, 0, 0]}
-          scale={[1120.013, 1120.013, 100]}
-        />
-        <mesh
-          geometry={nodes.Cube_Material001_0.geometry}
-          material={materials["Material.001"]}
-          position={[0, -101.673, 0]}
-          rotation={[-Math.PI / 2, 0, 0]}
-          scale={[1120.013, 1120.013, 1120.013]}
         />
         <mesh
           geometry={nodes.Sphere003_Material002_0.geometry}
