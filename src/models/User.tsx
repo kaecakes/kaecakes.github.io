@@ -38,8 +38,8 @@ const User = ({ hoveringObject, isRotating, rotationDirection }: UserProps) => {
 
   useEffect(() => {
     if (hoveringObject) userRef.current.rotateY(Math.PI / 2);
-    else userRef.current.rotateY(rotationDirection === 'left' ? 0 : Math.PI);
-  }, [hoveringObject, rotation, rotationDirection]);
+    else if (isRotating) userRef.current.rotateY(rotationDirection === 'left' ? 0 : Math.PI);
+  }, [hoveringObject, isRotating, rotation, rotationDirection]);
 
   return (
     <mesh
