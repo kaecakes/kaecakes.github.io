@@ -3,14 +3,11 @@ import { Suspense, useState } from 'react';
 import * as THREE from 'three';
 
 import Loader from '../components/Loader';
+import Popup from '../components/Popup';
 import Portal from '../models/Portal';
 import Sky from '../models/Sky';
 import Space from '../models/Space';
 import User from '../models/User';
-
-{/* <div className="absolute top-28 left-0 right-0 z-10 flex items-center justify-center">
-  POPUP
-</div> */}
 
 export type RotationDirection = 'right' | 'left'
 
@@ -22,6 +19,8 @@ const Home = () => {
 
   return (
     <section className="w-full h-screen relative">
+      {hoveringObject !== '' && <Popup hoveringObject={hoveringObject} />}
+
       <Canvas className={`w-full h-screen bg-transparent ${isRotating ? 'cursor-grabbing' : 'cursor-grab'}`} camera={{ near: 0.1, far: 1000 }}>
         <Suspense fallback={<Loader />}>
           {/* Lighting */}

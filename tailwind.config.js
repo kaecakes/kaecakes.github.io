@@ -27,5 +27,14 @@ export default {
       }
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }) {
+      const newUtilities = {
+        '.transform-none': {
+          transform: 'none',
+        },
+      };
+      addUtilities(newUtilities);
+    },
+  ],
 }
