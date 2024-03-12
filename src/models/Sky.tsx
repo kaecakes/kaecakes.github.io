@@ -8,6 +8,9 @@ import skyScene from '../assets/3d/stars.glb';
 const Sky = ({ isRotating }: { isRotating: boolean }) => {
     const sky = useGLTF(skyScene);
     const skyRef = useRef<Mesh>(null!);
+    const position = location.pathname === "/" ?
+        new Vector3(0, 3, 0) :
+        new Vector3(0, 0, 0)
 
     useFrame((_, delta) => {
         let rotationIntensity = 0;
@@ -19,7 +22,7 @@ const Sky = ({ isRotating }: { isRotating: boolean }) => {
     return (
         <mesh
             ref={skyRef}
-            position={new Vector3(0, 3, 0)}
+            position={position}
             scale={new Vector3(0.05, 0.05, 0.05)}
         >
             <primitive object={sky.scene} />
