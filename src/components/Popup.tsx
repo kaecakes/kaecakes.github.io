@@ -7,22 +7,19 @@ const InfoBox = ({ text }: { text: string }) => {
 }
 
 const renderContent: { [key: string]: JSX.Element } = {
-    'planetOne': (
+    'about': (
         <InfoBox text="About me" />
     ),
-    'planetTwo': (
+    'contact': (
         <InfoBox text="Contact" />
     ),
-    'planetThree': (
+    'projects': (
         <InfoBox text="Projects" />
-    ),
-    'planetFour': (
-        <InfoBox text="About me" />
     ),
 }
 
-const Popup = ({ hoveringObject }: { hoveringObject: string }) => {
-  return renderContent[hoveringObject] || null;
+const Popup = ({ hoveringNav }: { hoveringNav: string }) => {
+  return renderContent[hoveringNav] || null;
 }
 
 export default Popup

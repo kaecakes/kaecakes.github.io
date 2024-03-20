@@ -20,7 +20,7 @@ interface SpaceProps {
   isRotating: boolean;
   rotationDirection: RotationDirection
   setCurrentStage: React.Dispatch<React.SetStateAction<number>>;
-  setHoveringObject: React.Dispatch<React.SetStateAction<string>>;
+  setHoveringNav: React.Dispatch<React.SetStateAction<string>>;
   setIsRotating: React.Dispatch<React.SetStateAction<boolean>>;
   setRotationDirection: React.Dispatch<React.SetStateAction<RotationDirection>>;
 }
@@ -55,7 +55,7 @@ type GLTFResult = GLTF & {
   };
 };
 
-const Space = ({ isRotating, setCurrentStage, setHoveringObject, setIsRotating, setRotationDirection }: SpaceProps ) => {
+const Space = ({ isRotating, setCurrentStage, setHoveringNav, setIsRotating, setRotationDirection }: SpaceProps ) => {
   const planetOneRef = useRef<THREE.Group>(null!);
   const planetTwoRef = useRef<THREE.Group>(null!);
   const planetThreeRef = useRef<THREE.Group>(null!);
@@ -111,7 +111,7 @@ const Space = ({ isRotating, setCurrentStage, setHoveringObject, setIsRotating, 
       lastX.current = clientX;
       rotationSpeed.current = delta * 0.01 * Math.PI;
       if (delta != 0) setRotationDirection(delta < 0 ? 'left' : 'right');
-      setHoveringObject('');
+      setHoveringNav('');
     }
     
     // detect planet hover
@@ -121,13 +121,13 @@ const Space = ({ isRotating, setCurrentStage, setHoveringObject, setIsRotating, 
       mouse.x = (clientX / window.innerWidth) * 2 - 1;
       mouse.y = -(clientY / window.innerHeight) * 2 + 1;
       raycaster.setFromCamera(mouse, camera);
-      if (raycaster.intersectObjects(planetOneRef.current.children, true).length > 0) setHoveringObject('planetOne');
-      else if (raycaster.intersectObjects(planetTwoRef.current.children, true).length > 0) setHoveringObject('planetTwo');
-      else if (raycaster.intersectObjects(planetThreeRef.current.children, true).length > 0) setHoveringObject('planetThree');
-      else if (raycaster.intersectObjects(planetFourRef.current.children, true).length > 0) setHoveringObject('planetFour');
-      else setHoveringObject('');
+      if (raycaster.intersectObjects(planetOneRef.current.children, true).length > 0) setHoveringNav('about');
+      else if (raycaster.intersectObjects(planetTwoRef.current.children, true).length > 0) setHoveringNav('contact');
+      else if (raycaster.intersectObjects(planetThreeRef.current.children, true).length > 0) setHoveringNav('projects');
+      else if (raycaster.intersectObjects(planetFourRef.current.children, true).length > 0) setHoveringNav('about');
+      else setHoveringNav('');
     }
-  }, [camera, isRotating, viewport.width, setHoveringObject, setRotationDirection]);
+  }, [camera, isRotating, viewport.width, setHoveringNav, setRotationDirection]);
 
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if (e.key === 'ArrowLeft') {
