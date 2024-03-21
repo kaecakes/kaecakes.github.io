@@ -6,9 +6,9 @@ import * as THREE from 'three';
 import portalScene from '../assets/3d/portal.glb';
 
 const Portal = () => {
-  const scale = [5, 1, 8]
-  const rotation = [90, 0, 0]
-  const position = [0, 1, -30]
+  const scale = [6, 25, 8]
+  const rotation = [0, 0, 0]
+  const position = [0, -12, -34]
   const portalRef = useRef<THREE.Mesh>(null!);
   const { scene, animations } = useGLTF(portalScene);
   const { actions } = useAnimations(animations, portalRef);

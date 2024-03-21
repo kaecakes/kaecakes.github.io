@@ -4,6 +4,7 @@ import { Euler, Vector3 } from 'three';
 
 import userScene from '../assets/3d/stickman.glb';
 import { RotationDirection } from '../routes/Home';
+import { useFrame } from '@react-three/fiber';
 
 interface UserProps {
   hoveringNav: string;
@@ -15,6 +16,9 @@ const User = ({ hoveringNav, isRotating, rotationDirection }: UserProps) => {
   const userRef = useRef<THREE.Mesh>(null!);
   const { scene, animations }= useGLTF(userScene);
   const { actions } = useAnimations(animations, userRef);
+
+  const targetRotation = useRef(0);
+  const currentRotation = useRef(0);
   
   const adjustForScreenSize = () => {
     let scale, position;
@@ -37,9 +41,19 @@ const User = ({ hoveringNav, isRotating, rotationDirection }: UserProps) => {
   }, [actions, hoveringNav, isRotating]);
 
   useEffect(() => {
-    if (hoveringNav) userRef.current.rotateY(Math.PI / 2);
-    else if (isRotating) userRef.current.rotateY(rotationDirection === 'left' ? 0 : Math.PI);
-  }, [hoveringNav, isRotating, rotation, rotationDirection]);
+    if (hoveringNav) {
+      targetRotation.current = Math.PI;
+    } else if (isRotating) {
+      targetRotation.current = rotationDirection === 'left' ?  Math.PI / 2 : -Math.PI / 2;
+    } else {
+      targetRotation.current = Math.PI / 2;
+    }
+  }, [hoveringNav, isRotating, rotationDirection]);
+
+  useFrame(() => {
+    currentRotation.current += (targetRotation.current - currentRotation.current) * 0.15;
+    userRef.current.rotation.y = currentRotation.current;
+  });
 
   return (
     <mesh
