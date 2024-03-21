@@ -121,8 +121,8 @@ const Space = ({ isRotating, setCurrentStage, setHoveringNav, setIsRotating, set
       mouse.x = (clientX / window.innerWidth) * 2 - 1;
       mouse.y = -(clientY / window.innerHeight) * 2 + 1;
       raycaster.setFromCamera(mouse, camera);
-      if (raycaster.intersectObjects(planetOneRef.current.children, true).length > 0) setHoveringNav('about');
-      else if (raycaster.intersectObjects(planetTwoRef.current.children, true).length > 0) setHoveringNav('contact');
+      if (raycaster.intersectObjects(planetOneRef.current.children, true).length > 0) setHoveringNav('contact');
+      else if (raycaster.intersectObjects(planetTwoRef.current.children, true).length > 0) setHoveringNav('attribution');
       else if (raycaster.intersectObjects(planetThreeRef.current.children, true).length > 0) setHoveringNav('projects');
       else if (raycaster.intersectObjects(planetFourRef.current.children, true).length > 0) setHoveringNav('about');
       else setHoveringNav('');

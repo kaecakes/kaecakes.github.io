@@ -1,6 +1,7 @@
 import Home from './Home';
 import About from './About';
-import Projects from './Projects';
+import Attribution from './Attribution';
 import Contact from './Contact';
+import Projects from './Projects';
 
-export { Home, About, Projects, Contact };
+export { About, Attribution, Home, Contact, Projects };

@@ -16,6 +16,9 @@ const renderContent: { [key: string]: JSX.Element } = {
     'projects': (
         <InfoBox text="Projects" />
     ),
+    'attribution': (
+        <InfoBox text="Artwork Attribution" />
+    ),
 }
 
 const Popup = ({ hoveringNav }: { hoveringNav: string }) => {

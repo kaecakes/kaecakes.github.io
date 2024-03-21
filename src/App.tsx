@@ -1,5 +1,5 @@
 import { Route, Routes, useLocation } from 'react-router-dom';
-import { Home, About, Projects, Contact } from './routes';
+import { About, Attribution, Home, Contact, Projects } from './routes';
 import Navbar from './components/Navbar';
 import 'boxicons';
 import 'boxicons/css/boxicons.min.css';
@@ -21,6 +21,7 @@ const App = () => {
         <Route path="/about" element={<About />} />
         <Route path="/projects" element={<Projects />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/attribution" element={<Attribution />} />
       </Routes>
 
       {location.pathname !== "/" && (
