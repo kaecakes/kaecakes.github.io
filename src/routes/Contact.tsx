@@ -1,5 +1,8 @@
-import { useState } from "react";
 import emailjs from "@emailjs/browser";
+import { motion } from "framer-motion";
+
+import { useState } from "react";
+
 
 const Contact = () => {
   const [form, setForm] = useState({ name: '', email: '', message: '' });
@@ -38,7 +41,13 @@ const Contact = () => {
   };
 
   return (
-    <section className="relative max-container w-full z-10">
+    <motion.section
+      initial={{ scaleY: 0 }}
+      animate={{ scaleY: 1 }}
+      exit={{ scaleY: 0, transition: { duration: 1 } }}
+      variants={{ visible: { transition: { staggerChildren: 0.3 } } }}
+      className="relative max-container w-full z-10"
+    >
       <h1 className="head-text text-white">Get in touch</h1>
       <form
         className="w-full flex flex-col gap-7 mt-14"
@@ -91,7 +100,7 @@ const Contact = () => {
           {isLoading ? 'Sending' : 'Send message'}
         </button>
       </form>
-    </section>
+    </motion.section>
   )
 }
 

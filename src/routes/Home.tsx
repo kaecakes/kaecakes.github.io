@@ -1,4 +1,5 @@
 import { Canvas } from '@react-three/fiber';
+import { motion } from "framer-motion";
 import { Suspense, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as THREE from 'three';
@@ -25,7 +26,13 @@ const Home = () => {
   };
 
   return (
-    <section className="w-full h-screen relative" onClick={handleClick}>
+    <motion.section
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0, transition: { duration: 1 } }}
+      className="w-full h-screen relative"
+      onClick={handleClick}
+    >
       {hoveringNav !== '' && <Popup hoveringNav={hoveringNav} />}
 
       <Canvas className={`w-full h-screen bg-transparent ${hoveringNav ? 'cursor-pointer' : isRotating ? 'cursor-grabbing' : 'cursor-grab'}`} camera={{ near: 0.1, far: 1000 }}>
@@ -50,7 +57,7 @@ const Home = () => {
           <User hoveringNav={hoveringNav} isRotating={isRotating} rotationDirection={rotationDirection} />
         </Suspense>
       </Canvas>
-    </section>
+    </motion.section>
   )
 }
 

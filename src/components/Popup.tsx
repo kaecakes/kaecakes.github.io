@@ -1,6 +1,6 @@
 const InfoBox = ({ text }: { text: string }) => {
     return (
-        <div className="absolute top-24 left-0 right-0 z-10 flex items-center justify-center text-white">
+        <div className="absolute bottom-12 left-0 right-0 z-10 flex items-center justify-center text-xl uppercase text-white">
             <h1>{ text }</h1>
         </div>
     );
