@@ -9,7 +9,7 @@ import { Suspense } from 'react';
 import * as THREE from 'three';
 
 import Loader from './components/Loader';
-import Sky from './models/Sky';
+// import Sky from './models/Sky';
 
 const App = () => {
   const location = useLocation();
@@ -27,14 +27,14 @@ const App = () => {
         <>
           <Navbar />
           <div className="absolute w-full h-full overflow-hidden inset-0">
-            <Canvas className="static inset-0 bg-transparent z-0" camera={{ near: 0.1, far: 1000 }}>
+            <Canvas className="static inset-0 bg-transparent z-0" camera={{ position: [-1, -11, -1], near: 0.1, far: 1000 }}>
               <Suspense fallback={<Loader />}>
                 {/* Lighting */}
                 <directionalLight position={[1, 1, 1]} intensity={2} />
                 <ambientLight intensity={0.9} />
                 <hemisphereLight color={new THREE.Color(0xFFFFFF)} groundColor={new THREE.Color(0xFFFFFF)} intensity={1} />
                 {/* 3D Objects */}
-                <Sky isRotating={true} />
+                {/* <Sky isRotating={true} /> */}
               </Suspense>
             </Canvas>
           </div>
