@@ -212,6 +212,22 @@ body:has(.card[data-color="green"]:hover) {
   animation-name: fracture-right;
 }
 
+.shadow-white-glow {
+  --shadow-color: rgba(255, 255, 255, 0.5);
+  --shadow-size: 0 0 10px 5px;
+  box-shadow: var(--shadow-size) var(--shadow-color);
+}
+
+iframe {
+  background: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255, 255, 255, 0.66)" stroke-width="10" stroke-dasharray="235.6" stroke-dashoffset="0"><animateTransform attributeName="transform" attributeType="XML" type="rotate" from="0 50 50" to="360 50 50" dur="2s" repeatCount="indefinite" /></circle></svg>') center center no-repeat;
+  background-size: 50px 50px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 @keyframes fracture-left {
   0%, 50% {
     left: -100%;
