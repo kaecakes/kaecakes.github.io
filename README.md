@@ -1,30 +1,41 @@
-# React + TypeScript + Vite
+# Briana Noll's Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Welcome to my portfolio! This repository serves as a showcase of my projects and skills. Feel free to explore the projects and get in touch if you have any questions or collaboration opportunities.
 
-Currently, two official plugins are available:
+## About Me
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Passionate Full Stack Engineer dedicated to driving innovation and crafting tailored solutions that exceed client expectations. I specialize in collaborating closely with clients to understand their needs and preferences, translating them into customized features that add value and enhance user experience. Known for delivering high-quality code and innovative solutions, I thrive on continuous learning and leveraging technology to deliver meaningful results.
 
-## Expanding the ESLint configuration
+<!-- ## Projects
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Here are some of the projects featured in this portfolio:
 
-- Configure the top-level `parserOptions` property like this:
+1. **McDonald's Feel-Good Marketing Awards**
+   - Description: [Brief description of the project]
+   - Technologies Used: [List of technologies used]
+   - [Link to the project repository or live demo if applicable]
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+2. **Project Name**
+   - Description: [Brief description of the project]
+   - Technologies Used: [List of technologies used]
+   - [Link to the project repository or live demo if applicable]
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+[Add more projects as necessary]
+
+## Skills
+
+- Programming Languages: [List of programming languages you're proficient in]
+- Technologies & Tools: [List of technologies and tools you're familiar with]
+- Soft Skills: [List any soft skills relevant to your work] -->
+
+## Contact Me
+
+- Email: brinary.notation@gmail.com
+- LinkedIn: [in/briana-noll](https://www.linkedin.com/in/briana-noll/)
+- Portfolio Website: [Briana's Portfolio](https://portfolio-iota-nine-72.vercel.app/)
+
+## License
+
+This project is licensed under the [MIT License](https://github.com/kaecakes/portfolio/blob/main/LICENSE.txt).
+
+Feel free to fork this repository and customize it for your own portfolio.
